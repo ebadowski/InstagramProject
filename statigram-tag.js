@@ -5,9 +5,14 @@ var casper = require('casper').create({
     loadImages:  false,
     loadPlugins: false,
     webSecurityEnabled: false
+  },
+  viewportSize: {
+    height: 1000,
+    width: 1024
   }
 });
 var instagramTag = casper.cli.get(0);
+var treshold = casper.cli.get(1) || 100;
 var baseUrl = "http://statigr.am/tag/" + instagramTag + '/';
 var downloaded = [];
 var queued = [];
@@ -31,27 +36,48 @@ function processQueue(){
     return;
   }
 
-  var urls = queued.slice(0, 5);
-  queued = queued.slice(5);
+  console.log("DOWNLAOD TIME!!!");
+  var count = 0;
 
-  casper.eachThen(urls, function(response){
+  casper.eachThen(queued, function(response){
     this.thenOpen(response.data, function(response) {
       var modified = new Date(response.headers.get("Last-Modified"));
+      var position = queued.indexOf(response.url);
 
+      casper.echo('Download #' + (count++) + ' – '+response.url, 'INFO');
       casper.download(
         response.url,
        [modified.getUTCFullYear(), modified.getUTCMonth()+1, modified.getUTCDate()].join("-") + "/" + response.url.split("/").pop()
       );
+
+      // Stacking in downloaded
+      // and removing the url from the queued array
+      downloaded.push(response.url);
+      queued = queued.slice(0, position).concat(queued.slice(position + 1));
     });
   });
-
-  processQueue();
 }
 
-casper.start(baseUrl, function(){
-  this.getElementsAttribute('.photos-wrapper .lienPhotoGrid:only-child img', 'src').map(queue);
+function clickAndLoad(){
+  casper.click('.more');
 
-  processQueue();
-});
+  casper.waitWhileVisible('#conteneurLoaderEnCours', function(){});
+
+  casper.then(function(){
+    var elements = casper.getElementsAttribute('.photos-wrapper .lienPhotoGrid:only-child img', 'src');
+
+    console.log("Now displaying " + elements.length + " pictures.");
+
+    if (elements.length < treshold){
+      casper.waitForSelector(".more", clickAndLoad);
+    }
+    else{
+      elements.map(queue);
+      processQueue();
+    }
+  });
+}
+
+casper.start(baseUrl, clickAndLoad);
 
 casper.run();
