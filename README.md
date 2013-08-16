@@ -7,6 +7,18 @@ No resume feature.
 No extra metadata.  
 No OAuth pain.
 
+## Install
+
+You need to clone this Gist and install at least **CasperJS 1.1**.
+
+```bash
+brew update
+brew install phantomjs
+brew install casperjs --devel
+```
+
+## Usage
+
 ```bash
 # Downloading the 200 latest pictures of Hack the Barbican 2013
 # > hackthebarbican.org
