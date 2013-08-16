@@ -9,7 +9,7 @@ No OAuth pain.
 
 ## Install
 
-You need to clone this Gist and install at least **CasperJS 1.1**.
+You need to clone this Gist and install at least [CasperJS 1.1](http://docs.casperjs.org/en/latest/installation.html).
 
 ```bash
 brew update
