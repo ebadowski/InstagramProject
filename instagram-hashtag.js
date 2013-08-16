@@ -3,8 +3,7 @@
 var casper = require('casper').create({
   pageSettings: {
     loadImages:  false,
-    loadPlugins: false,
-    webSecurityEnabled: false
+    loadPlugins: false
   },
   viewportSize: {
     height: 1000,
@@ -21,14 +20,9 @@ if (!instagramTag){
   casper.echo('Requiring at least a valid Instagram hashtag to query.').exit();
 }
 
-function requiresDownload(url){
-  return ~downloaded.indexOf(url) + ~queued.indexOf(url) === 0;
-}
 
 function queue(url){
-  if (requiresDownload(url)){
-    queued.push(url);
-  }
+  queued.push(url.replace(/_5.jpg/, '_7.jpg'));
 }
 
 function processQueue(){
@@ -44,7 +38,7 @@ function processQueue(){
       var modified = new Date(response.headers.get("Last-Modified"));
       var position = queued.indexOf(response.url);
 
-      casper.echo('Download #' + (count++) + ' – '+response.url, 'INFO');
+      casper.echo('Download #' + (++count) + ' – '+response.url, 'INFO');
       casper.download(
         response.url,
        [modified.getUTCFullYear(), modified.getUTCMonth()+1, modified.getUTCDate()].join("-") + "/" + response.url.split("/").pop()
