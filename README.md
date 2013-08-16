@@ -15,16 +15,20 @@ You need to clone this Gist and install at least **CasperJS 1.1**.
 brew update
 brew install phantomjs
 brew install casperjs --devel
+
+git clone https://gist.github.com/6245811.git instagram-hashtag-gist
 ```
 
 ## Usage
 
 ```bash
+cd instagram-hashtag-gist
+
 # Downloading the 200 latest pictures of Hack the Barbican 2013
 # > hackthebarbican.org
-casperjs statigram-tag.js htb2013 200
+casperjs instagram-hashtag.js htb2013 200
 
 # Downloading the 100 latest pictures related to Sud Web
 # > http://sudweb.fr
-casperjs statigram-tag.js sudweb
+casperjs instagram-hashtag.js sudweb
 ```
