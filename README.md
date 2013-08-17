@@ -13,7 +13,6 @@ You need to clone this Gist and install at least [CasperJS 1.1](http://docs.casp
 
 ```bash
 brew update
-brew install phantomjs
 brew install casperjs --devel
 
 git clone https://gist.github.com/6245811.git instagram-hashtag-gist
