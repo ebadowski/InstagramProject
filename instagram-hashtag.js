@@ -10,8 +10,9 @@ var casper = require('casper').create({
     width: 1024
   }
 });
+
 var instagramTag = casper.cli.get(0);
-var treshold = casper.cli.get(1) || 100;
+var threshold = casper.cli.get(1) || 100;
 var baseUrl = "http://iconosquare.com/tag/" + instagramTag + '/';
 var downloaded = [];
 var queued = [];
@@ -22,7 +23,7 @@ if (!instagramTag){
 
 
 function queue(url){
-  queued.push(url.replace(/_(5|s).jpg/, '_7.jpg'));
+  queued.push(url.replace(/_s.jpg/, '_n.jpg'));
 }
 
 function processQueue(){
@@ -62,7 +63,7 @@ function clickAndLoad(){
 
     console.log("Now displaying " + elements.length + " pictures.");
 
-    if (elements.length < treshold){
+    if (elements.length < threshold){
       casper.waitForSelector(".more", clickAndLoad);
     }
     else{
