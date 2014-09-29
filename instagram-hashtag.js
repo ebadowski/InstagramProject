@@ -12,7 +12,7 @@ var casper = require('casper').create({
 });
 var instagramTag = casper.cli.get(0);
 var treshold = casper.cli.get(1) || 100;
-var baseUrl = "http://statigr.am/tag/" + instagramTag + '/';
+var baseUrl = "http://iconosquare.com/tag/" + instagramTag + '/';
 var downloaded = [];
 var queued = [];
 
@@ -22,7 +22,7 @@ if (!instagramTag){
 
 
 function queue(url){
-  queued.push(url.replace(/_5.jpg/, '_7.jpg'));
+  queued.push(url.replace(/_(5|s).jpg/, '_7.jpg'));
 }
 
 function processQueue(){
