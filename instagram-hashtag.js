@@ -1,6 +1,7 @@
 "use strict";
 
 var casper = require('casper').create({
+  waitTimeout: 10000,
   pageSettings: {
     loadImages:  false,
     loadPlugins: false
@@ -61,10 +62,13 @@ function clickAndLoad(){
   casper.then(function(){
     var elements = casper.getElementsAttribute('.photos-wrapper .lienPhotoGrid:only-child img', 'src');
 
-    console.log("Now displaying " + elements.length + " pictures.");
+    console.log("Found " + elements.length + " pictures…");
 
-    if (elements.length < threshold){
-      casper.waitForSelector(".more", clickAndLoad);
+    if (queued.length < threshold){
+      casper.waitForSelector(".more", clickAndLoad, function(){
+        elements.map(queue);
+        processQueue();
+      });
     }
     else{
       elements.map(queue);
