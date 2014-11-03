@@ -13,7 +13,7 @@ var casper = require('casper').create({
 });
 
 var instagramTag = casper.cli.get(0);
-var threshold = casper.cli.get(1) || 100;
+var threshold = casper.cli.get('limit') || 100;
 var baseUrl = "http://iconosquare.com/tag/" + instagramTag + '/';
 var downloaded = [];
 var queued = [];
@@ -64,7 +64,7 @@ function clickAndLoad(){
 
     console.log("Found " + elements.length + " pictures…");
 
-    if (queued.length < threshold){
+    if (elements.length < threshold){
       casper.waitForSelector(".more", clickAndLoad, function(){
         elements.map(queue);
         processQueue();
